@@ -1,0 +1,54 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { useAppStore } from '@/store/useAppStore';
+import BottomNav from '@/components/ui/BottomNav';
+import AccountSettings from '@/components/settings/AccountSettings';
+import DataPrivacy from '@/components/settings/DataPrivacy';
+import NotificationsSettings from '@/components/settings/NotificationsSettings';
+import VerificationCard from '@/components/settings/VerificationCard';
+
+export default function SettingsPage() {
+  const [mounted, setMounted] = useState(false);
+  const { user } = useAppStore();
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && status === 'unauthenticated') {
+      router.replace('/');
+    }
+  }, [mounted, status, router]);
+
+  if (!mounted || status === 'loading' || !user) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-white h-28 animate-pulse" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 pb-28">
+      {/* Header */}
+      <div className="bg-white px-6 pt-14 pb-6 shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+      </div>
+
+      <div className="px-5 pt-6 flex flex-col gap-4">
+        <AccountSettings user={user} />
+        <VerificationCard />
+        <DataPrivacy />
+        <NotificationsSettings />
+      </div>
+
+      <BottomNav />
+    </div>
+  );
+}
