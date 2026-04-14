@@ -1,16 +1,23 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import type { NextRequest } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 import { getRevenueAnalytics } from '@/lib/analytics';
+import { getRequiredOneOfEnv } from '@/lib/env';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export async function GET() {
+const authSecret = getRequiredOneOfEnv(
+  ['NEXTAUTH_SECRET', 'AUTH_SECRET'],
+  'admin analytics authentication'
+);
+
+export async function GET(request: NextRequest) {
   try {
-    const session = await auth();
-    const userId = session?.user?.id;
-    const role = session?.user?.role;
+    const token = await getToken({ req: request, secret: authSecret });
+    const userId = token?.id;
+    const role = token?.role;
 
     if (!userId) {
       return NextResponse.json({ message: 'Unauthorized.' }, { status: 401 });
