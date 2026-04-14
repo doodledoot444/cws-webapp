@@ -59,17 +59,17 @@ export default function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFor
   };
 
   const inputClass =
-    'w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-500 text-gray-900 text-sm';
+    'w-full px-4 py-3 rounded-xl border border-default focus:outline-none focus:ring-2 focus:ring-primary text-primary text-sm';
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">Create account</h2>
-        <p className="text-sm text-gray-500 mb-5">Join Ceris Water Station</p>
+        <h2 className="text-xl font-bold text-primary mb-1">Create account</h2>
+        <p className="text-sm text-secondary mb-5">Join Ceris Water Station</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        <label className="block text-sm font-medium text-secondary mb-1.5">
           Full Name
         </label>
         <input
@@ -84,7 +84,7 @@ export default function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFor
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        <label className="block text-sm font-medium text-secondary mb-1.5">
           Email
         </label>
         <input
@@ -99,7 +99,7 @@ export default function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFor
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        <label className="block text-sm font-medium text-secondary mb-1.5">
           Password
         </label>
         <input
@@ -115,7 +115,7 @@ export default function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFor
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        <label className="block text-sm font-medium text-secondary mb-1.5">
           Home Address
         </label>
         <input
@@ -130,13 +130,13 @@ export default function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFor
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl px-4 py-3">
+        <div className="bg-danger/12 border border-danger/30 text-danger text-sm rounded-xl px-4 py-3">
           {error}
         </div>
       )}
 
       {notice && (
-        <div className="bg-sky-50 border border-sky-100 text-sky-700 text-sm rounded-xl px-4 py-3">
+        <div className="bg-info/12 border border-info/30 text-info text-sm rounded-xl px-4 py-3">
           {notice}
         </div>
       )}
@@ -145,12 +145,12 @@ export default function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFor
         {loading ? 'Creating account…' : 'Create Account'}
       </Button>
 
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-secondary">
         Already have an account?{' '}
         <button
           type="button"
           onClick={onSwitchToLogin}
-          className="text-sky-500 font-semibold hover:underline"
+          className="text-primary font-semibold hover:underline"
         >
           Sign In
         </button>

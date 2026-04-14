@@ -2,13 +2,10 @@ import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { getPrisma } from '@/lib/prisma';
 import {
-  generateVerificationToken,
-  getVerificationTokenExpiry,
   hashPassword,
   isValidEmail,
   toClientUser,
 } from '@/lib/auth';
-import { sendVerificationEmail } from '@/lib/mailer';
 
 export const runtime = 'nodejs';
 
@@ -52,11 +49,8 @@ export async function POST(request: Request) {
     }
 
     const passwordHash = await hashPassword(password);
-    const token = generateVerificationToken();
-    const expiresAt = getVerificationTokenExpiry();
-
-    const created = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-      const user = await tx.user.create({
+    const created = await prisma.$transaction(async (tx: Prisma.TransactionClient) =>
+      tx.user.create({
         data: {
           email,
           passwordHash,
@@ -65,37 +59,13 @@ export async function POST(request: Request) {
           address,
           isVerified: false,
         },
-      });
-
-      await tx.emailVerificationToken.create({
-        data: {
-          token,
-          userId: user.id,
-          expiresAt,
-        },
-      });
-
-      return user;
-    });
-
-    try {
-      await sendVerificationEmail(created.email, token, created.name);
-    } catch (error) {
-      await prisma.$transaction([
-        prisma.emailVerificationToken.deleteMany({ where: { userId: created.id } }),
-        prisma.user.delete({ where: { id: created.id } }),
-      ]);
-
-      console.error('Failed to send verification email:', error);
-      return NextResponse.json(
-        { message: 'Unable to send verification email right now. Please try again.' },
-        { status: 500 }
-      );
-    }
+      })
+    );
 
     return NextResponse.json(
       {
-        message: 'Account created. Please verify your email to enable ordering.',
+        message:
+          'Account created successfully. Sign in and request verification when ready.',
         user: toClientUser(created),
       },
       { status: 201 }

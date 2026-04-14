@@ -26,24 +26,23 @@ export default function OrderPage() {
 
   if (!mounted || status === 'loading' || !user) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="bg-white h-20 animate-pulse" />
+      <div className="min-h-screen bg-base">
+        <div className="bg-surface h-20 animate-pulse" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-28">
-      {/* Header */}
-      <div className="bg-white px-4 pt-14 pb-4 shadow-sm flex items-center gap-3">
+    <div className="min-h-screen bg-base pb-28">
+      <div className="bg-surface px-4 pt-14 pb-4 shadow-sm flex items-center gap-3">
         <button
           onClick={() => router.push('/dashboard')}
-          className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+          className="p-2 hover:bg-base rounded-xl transition-colors"
           aria-label="Go back"
         >
-          <ArrowLeft className="w-5 h-5 text-gray-600" />
+          <ArrowLeft className="w-5 h-5 text-secondary" />
         </button>
-        <h1 className="text-xl font-bold text-gray-900">New Order</h1>
+        <h1 className="text-xl font-bold text-primary">New Order</h1>
       </div>
 
       <div className="px-5 pt-6">

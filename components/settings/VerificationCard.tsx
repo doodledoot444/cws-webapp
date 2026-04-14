@@ -21,34 +21,34 @@ export default function VerificationCard() {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
+    <div className="bg-surface rounded-2xl shadow-sm border border-default">
       <div className="px-5 pt-5 pb-5">
-        <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4">
+        <h2 className="text-sm font-bold text-primary uppercase tracking-wide mb-4">
           Account Verification
         </h2>
 
         {isVerified ? (
-          <div className="flex items-center gap-3 bg-green-50 border border-green-100 rounded-xl p-4">
-            <ShieldCheck className="w-6 h-6 text-green-500 flex-shrink-0" />
+          <div className="flex items-center gap-3 bg-success/12 border border-success/30 rounded-xl p-4">
+            <ShieldCheck className="w-6 h-6 text-success shrink-0" />
             <div>
-              <p className="text-sm font-semibold text-green-800">
+              <p className="text-sm font-semibold text-primary">
                 Email Verified
               </p>
-              <p className="text-xs text-green-600 mt-0.5">
+              <p className="text-xs text-secondary mt-0.5">
                 Your email has been confirmed. You can place and track orders.
               </p>
             </div>
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-3 bg-amber-50 border border-amber-100 rounded-xl p-4">
-              <ShieldAlert className="w-6 h-6 text-amber-500 flex-shrink-0" />
+            <div className="flex items-center gap-3 bg-warning/12 border border-warning/30 rounded-xl p-4">
+              <ShieldAlert className="w-6 h-6 text-warning shrink-0" />
               <div>
-                <p className="text-sm font-semibold text-amber-800">
+                <p className="text-sm font-semibold text-primary">
                   Email Verification Pending
                 </p>
-                <p className="text-xs text-amber-600 mt-0.5">
-                  We sent a verification link to your email. Ordering stays
+                <p className="text-xs text-secondary mt-0.5">
+                  Request a verification link to your email. Ordering stays
                   disabled until you confirm that link.
                 </p>
               </div>
@@ -57,7 +57,7 @@ export default function VerificationCard() {
             <button
               onClick={handleRequest}
               disabled={requesting}
-              className="w-full flex items-center justify-center gap-2 bg-sky-500 text-white py-3 px-6 rounded-xl font-semibold text-sm hover:bg-sky-600 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 bg-primary text-on-primary py-3 px-6 rounded-xl font-semibold text-sm hover:bg-primary-strong active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {requesting ? (
                 <>
@@ -65,18 +65,18 @@ export default function VerificationCard() {
                   Requesting…
                 </>
               ) : (
-                'Resend Verification Email'
+                'Request Verification Email'
               )}
             </button>
 
             {requesting && (
-              <p className="text-xs text-gray-400 text-center">
-                Sending a fresh verification email…
+              <p className="text-xs text-secondary text-center">
+                Sending verification email…
               </p>
             )}
 
             {!requesting && message && (
-              <p className="text-xs text-center text-sky-600">{message}</p>
+              <p className="text-xs text-center text-info">{message}</p>
             )}
           </div>
         )}

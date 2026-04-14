@@ -24,14 +24,13 @@ export default function AuthModal({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      {/* Tab switcher */}
-      <div className="flex mb-6 bg-gray-100 rounded-xl p-1">
+      <div className="flex mb-6 bg-base rounded-xl p-1">
         <button
           onClick={() => setTab('login')}
           className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
             tab === 'login'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-500 hover:text-gray-700'
+              ? 'bg-surface text-primary shadow-sm'
+              : 'text-secondary hover:text-secondary'
           }`}
         >
           Sign In
@@ -40,8 +39,8 @@ export default function AuthModal({
           onClick={() => setTab('register')}
           className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
             tab === 'register'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-500 hover:text-gray-700'
+              ? 'bg-surface text-primary shadow-sm'
+              : 'text-secondary hover:text-secondary'
           }`}
         >
           Register

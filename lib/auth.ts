@@ -40,6 +40,7 @@ export function toClientUser(user: PrismaUser): User {
     id: user.id,
     email: user.email,
     name: user.name ?? '',
+    role: user.role,
     phone: user.phone,
     address: user.address ?? '',
     isVerified: user.isVerified,

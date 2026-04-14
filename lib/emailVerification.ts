@@ -45,7 +45,16 @@ export async function verifyEmailToken(token: string): Promise<VerifyEmailTokenR
       },
     });
 
-    // Token is deleted only after successful verification.
+    await tx.notification.create({
+      data: {
+        userId: verificationToken.userId,
+        type: 'ACCOUNT_VERIFIED',
+        message:
+          'Your Account has been Verified. Thank you for choosing Ceris Water Station. You can now place an order.',
+      },
+    });
+
+    
     await tx.emailVerificationToken.delete({ where: { id: verificationToken.id } });
 
     return user;

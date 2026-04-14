@@ -43,6 +43,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.name,
+          role: user.role,
           isVerified: user.isVerified,
           address: user.address,
           phone: user.phone,
@@ -54,12 +55,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role ?? 'USER';
         token.isVerified = Boolean(user.isVerified);
         token.address = user.address ?? null;
         token.phone = user.phone ?? null;
       }
 
       if (trigger === 'update' && session?.user) {
+        token.name = session.user.name ?? token.name;
         token.isVerified = Boolean(session.user.isVerified);
         token.address = session.user.address ?? null;
         token.phone = session.user.phone ?? null;
@@ -71,6 +74,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           select: {
             email: true,
             name: true,
+            role: true,
             isVerified: true,
             address: true,
             phone: true,
@@ -80,6 +84,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (dbUser) {
           token.email = dbUser.email;
           token.name = dbUser.name ?? token.name;
+          token.role = dbUser.role;
           token.isVerified = dbUser.isVerified;
           token.address = dbUser.address ?? null;
           token.phone = dbUser.phone ?? null;
@@ -96,6 +101,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.user.id = String(token.id || '');
       session.user.email = String(token.email || session.user.email || '');
       session.user.name = token.name ? String(token.name) : null;
+      session.user.role = token.role === 'ADMIN' ? 'ADMIN' : 'USER';
       session.user.isVerified = Boolean(token.isVerified);
       session.user.address = token.address ? String(token.address) : null;
       session.user.phone = token.phone ? String(token.phone) : null;
@@ -105,5 +111,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   pages: {
     signIn: '/',
+    signOut: '/',
   },
 });

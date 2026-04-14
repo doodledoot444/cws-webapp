@@ -11,32 +11,31 @@ interface UserInfoProps {
 export default function UserInfo({ user, onLogout }: UserInfoProps) {
   return (
     <div className="flex flex-col gap-4">
-      {/* Account details card */}
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-        <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-4">
+      <div className="bg-surface rounded-2xl p-5 shadow-sm border border-default">
+        <p className="text-xs font-bold text-secondary uppercase tracking-wide mb-4">
           Account Info
         </p>
 
         <div className="flex flex-col gap-4">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Mail className="w-5 h-5 text-sky-500" />
+            <div className="icon-chip w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
+              <Mail className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs text-gray-400">Email</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">
+              <p className="text-xs text-secondary">Email</p>
+              <p className="text-sm font-semibold text-primary mt-0.5">
                 {user.email}
               </p>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center flex-shrink-0">
-              <MapPin className="w-5 h-5 text-sky-500" />
+            <div className="icon-chip-warm w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
+              <MapPin className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs text-gray-400">Home Address</p>
-              <p className="text-sm font-semibold text-gray-900 mt-0.5">
+              <p className="text-xs text-secondary">Home Address</p>
+              <p className="text-sm font-semibold text-primary mt-0.5">
                 {user.address}
               </p>
             </div>
@@ -44,10 +43,9 @@ export default function UserInfo({ user, onLogout }: UserInfoProps) {
         </div>
       </div>
 
-      {/* Logout */}
       <button
         onClick={onLogout}
-        className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl border-2 border-red-100 text-red-500 font-semibold hover:bg-red-50 active:scale-95 transition-all"
+        className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl border border-danger/35 text-danger font-semibold hover:bg-danger/12 active:scale-95 transition-all"
       >
         <LogOut className="w-5 h-5" />
         Sign Out

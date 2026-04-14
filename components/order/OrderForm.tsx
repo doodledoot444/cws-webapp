@@ -16,6 +16,8 @@ export default function OrderForm() {
   const [notes, setNotes] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const createOrder = useAppStore((state) => state.createOrder);
   const user = useAppStore((state) => state.user);
@@ -24,9 +26,13 @@ export default function OrderForm() {
   const total = quantity * PRICE_PER_UNIT;
   const isVerified = user?.isVerified ?? false;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isVerified) {
+      return;
+    }
+
+    if (submitting) {
       return;
     }
 
@@ -36,7 +42,17 @@ export default function OrderForm() {
       lot,
       ...(notes ? { notes } : {}),
     };
-    const order = createOrder(address, quantity);
+    setSubmitting(true);
+    setErrorMessage('');
+    const result = await createOrder(address, quantity);
+    setSubmitting(false);
+
+    if (!result.success || !result.order) {
+      setErrorMessage(result.message || 'Unable to place order right now.');
+      return;
+    }
+
+    const order = result.order;
     setShowConfirmation(true);
 
     setTimeout(() => {
@@ -46,21 +62,20 @@ export default function OrderForm() {
   };
 
   const inputClass =
-    'w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-500 text-gray-900 text-sm';
+    'w-full px-4 py-3 rounded-xl border border-default focus:outline-none focus:ring-2 focus:ring-primary text-primary text-sm';
 
   return (
     <>
       {showConfirmation && <ConfirmationBanner />}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {/* Address */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-          <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4">
+        <div className="bg-surface rounded-2xl p-5 shadow-sm border border-default">
+          <h2 className="text-sm font-bold text-primary uppercase tracking-wide mb-4">
             Delivery Address
           </h2>
           <div className="flex flex-col gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-sm font-medium text-secondary mb-1.5">
                 Street
               </label>
               <input
@@ -75,7 +90,7 @@ export default function OrderForm() {
 
             <div className="flex gap-3">
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-sm font-medium text-secondary mb-1.5">
                   Block
                 </label>
                 <input
@@ -88,7 +103,7 @@ export default function OrderForm() {
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-sm font-medium text-secondary mb-1.5">
                   Lot
                 </label>
                 <input
@@ -103,9 +118,9 @@ export default function OrderForm() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-sm font-medium text-secondary mb-1.5">
                 Notes{' '}
-                <span className="text-gray-400 font-normal">(optional)</span>
+                <span className="text-secondary font-normal">(optional)</span>
               </label>
               <input
                 type="text"
@@ -118,45 +133,52 @@ export default function OrderForm() {
           </div>
         </div>
 
-        {/* Quantity */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-          <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4">
+        <div className="bg-surface rounded-2xl p-5 shadow-sm border border-default">
+          <h2 className="text-sm font-bold text-primary uppercase tracking-wide mb-4">
             Quantity
           </h2>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">Gallons</p>
-              <p className="text-xs text-gray-400">₱{PRICE_PER_UNIT} each</p>
+              <p className="text-sm font-medium text-secondary">Gallons</p>
+              <p className="text-xs text-secondary">₱{PRICE_PER_UNIT} each</p>
             </div>
             <QuantitySelector value={quantity} onChange={setQuantity} />
           </div>
         </div>
-
-        {/* Price summary */}
-        <div className="bg-sky-50 rounded-2xl p-5 border border-sky-100">
+        <div className="bg-surface rounded-2xl p-5 border border-default">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-sky-700">
+              <p className="text-sm font-medium text-primary">
                 {quantity} gallon{quantity > 1 ? 's' : ''} × ₱{PRICE_PER_UNIT}
               </p>
-              <p className="text-xs text-sky-500 mt-1">
+              <p className="text-xs text-primary mt-1">
                 Est. delivery: 10–15 minutes
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-sky-500 uppercase tracking-wide">Total</p>
-              <p className="text-3xl font-bold text-sky-600">₱{total}</p>
+              <p className="text-xs text-primary uppercase tracking-wide">Total</p>
+              <p className="text-3xl font-bold text-primary">₱{total}</p>
             </div>
           </div>
         </div>
 
-        <Button type="submit" variant="primary" fullWidth size="lg" disabled={!isVerified}>
+        <Button
+          type="submit"
+          variant="primary"
+          fullWidth
+          size="lg"
+          disabled={!isVerified || submitting}
+        >
           Confirm Order
         </Button>
 
+        {errorMessage && (
+          <p className="text-xs text-center text-danger">{errorMessage}</p>
+        )}
+
         {!isVerified && (
-          <div className="flex items-center gap-2 justify-center text-amber-600 bg-amber-50 border border-amber-100 rounded-xl px-4 py-3">
-            <ShieldAlert className="w-4 h-4 flex-shrink-0" />
+          <div className="flex items-center gap-2 justify-center text-warning bg-warning/12 border border-warning/30 rounded-xl px-4 py-3">
+            <ShieldAlert className="w-4 h-4 shrink-0" />
             <p className="text-xs font-medium">
               Email verification is required to place orders. Go to{' '}
               <a href="/settings" className="underline font-semibold">

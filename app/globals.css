@@ -1,22 +1,114 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
 :root {
-  --background: #f9fafb;
-  --foreground: #111827;
+  --color-base: #0d1219;
+  --color-surface: #141b24;
+  --color-elevated: #1b2430;
+  --color-primary: #5fa8ff;
+  --color-primary-strong: #428ddd;
+  --color-success: #3ccf9d;
+  --color-warning: #f2bc5d;
+  --color-danger: #f37987;
+  --color-info: #66b7ff;
+  --color-accent: #e9a85d;
+  --color-text-primary: #e7eef8;
+  --color-text-secondary: #b4c0d0;
+  --color-text-muted: #8796ab;
+  --color-text-on-primary: #041425;
+  --color-border-default: #283447;
+  --color-background: var(--color-base);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--color-base);
+  --color-foreground: var(--color-text-primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-base);
+  color: var(--color-text-primary);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-tap-highlight-color: transparent;
+  min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  background: var(--color-base);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.35) transparent;
+}
+
+*::selection {
+  background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+  color: var(--color-text-primary);
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.surface-card {
+  background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border-default);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+}
+
+.hairline-ring {
+  box-shadow: inset 0 0 0 1px var(--color-border-default);
+}
+
+.icon-chip {
+  background: color-mix(in srgb, var(--color-info) 15%, var(--color-surface));
+  color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-info) 22%, transparent);
+}
+
+.icon-chip-warm {
+  background: color-mix(in srgb, var(--color-accent) 18%, var(--color-surface));
+  color: color-mix(in srgb, var(--color-accent) 82%, var(--color-text-primary));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
+
+.icon-chip-muted {
+  background: color-mix(in srgb, var(--color-base) 70%, var(--color-surface));
+  color: var(--color-text-muted);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-border-default) 78%, transparent);
+}
+
+.icon-chip-strong {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+  color: var(--color-text-on-primary);
+  box-shadow: 0 12px 30px rgba(29, 120, 242, 0.22);
+}
+
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.bg-elevated {
+  background: var(--color-elevated);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
 }
 
 /* Animations */
@@ -55,7 +147,13 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

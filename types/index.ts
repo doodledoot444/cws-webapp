@@ -1,4 +1,8 @@
-export type OrderStatus = 'Pending' | 'Confirmed' | 'In Progress' | 'Completed';
+export type UserRole = 'USER' | 'ADMIN';
+
+export type OrderStatus = 'PENDING' | 'CONFIRMED';
+
+export type NotificationType = 'ORDER_CREATED' | 'ORDER_CONFIRMED' | 'ACCOUNT_VERIFIED';
 
 export interface OrderAddress {
   street: string;
@@ -10,6 +14,11 @@ export interface OrderAddress {
 export interface Order {
   id: string;
   userId: string;
+  user?: {
+    id: string;
+    email: string;
+    name: string | null;
+  };
   address: OrderAddress;
   quantity: number;
   pricePerUnit: number;
@@ -18,10 +27,20 @@ export interface Order {
   createdAt: string;
 }
 
+export interface AppNotification {
+  id: string;
+  userId: string;
+  message: string;
+  type: NotificationType;
+  isRead: boolean;
+  createdAt: string;
+}
+
 export interface User {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
   address: string;
   phone?: string | null;
   isVerified: boolean;

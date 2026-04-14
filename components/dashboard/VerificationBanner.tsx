@@ -24,23 +24,23 @@ export default function VerificationBanner() {
   };
 
   return (
-    <div className="mb-4 bg-amber-50 border border-amber-200 rounded-2xl p-4">
+    <div className="mb-4 bg-warning/12 border border-warning/30 rounded-2xl p-4">
       <div className="flex items-start gap-3">
-        <ShieldAlert className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+        <ShieldAlert className="w-5 h-5 text-warning shrink-0 mt-0.5" />
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-amber-800">
+          <p className="text-sm font-semibold text-primary">
             Account under verification
           </p>
-          <p className="text-xs text-amber-600 mt-1 leading-relaxed">
-            Your email is not verified yet. You may browse, but ordering is
-            temporarily disabled until you confirm your email address.
+          <p className="text-xs text-secondary mt-1 leading-relaxed">
+            Your email is not verified yet. Request a verification email below,
+            then confirm it to enable ordering.
           </p>
 
           <div className="flex items-center gap-3 mt-3">
             <button
               onClick={handleRequest}
               disabled={requesting}
-              className="flex items-center gap-1.5 bg-amber-500 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-amber-600 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex items-center gap-1.5 bg-warning text-on-primary px-4 py-2 rounded-xl text-xs font-semibold hover:bg-warning/90 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {requesting ? (
                 <>
@@ -48,14 +48,14 @@ export default function VerificationBanner() {
                   Requesting…
                 </>
               ) : (
-                'Resend Verification Email'
+                'Request Verification Email'
               )}
             </button>
 
             {!requesting && (
               <button
                 onClick={() => setDismissed(true)}
-                className="text-xs text-amber-500 hover:underline"
+                className="text-xs text-warning hover:underline"
               >
                 Dismiss
               </button>
@@ -63,13 +63,13 @@ export default function VerificationBanner() {
           </div>
 
           {requesting && (
-            <p className="text-xs text-amber-400 mt-2">
-              Sending a fresh verification link to your email…
+            <p className="text-xs text-secondary mt-2">
+              Sending a verification link to your email…
             </p>
           )}
 
           {!requesting && message && (
-            <p className="text-xs text-amber-500 mt-2">{message}</p>
+            <p className="text-xs text-warning mt-2">{message}</p>
           )}
         </div>
       </div>

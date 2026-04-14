@@ -12,9 +12,13 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
+  if (req.nextUrl.pathname.startsWith('/admin') && token.role !== 'ADMIN') {
+    return NextResponse.redirect(new URL('/dashboard', req.url));
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/order/:path*', '/profile/:path*'],
+  matcher: ['/dashboard/:path*', '/order/:path*', '/profile/:path*', '/admin/:path*'],
 };

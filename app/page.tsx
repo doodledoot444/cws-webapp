@@ -14,7 +14,7 @@ export default function LandingPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
+    <main className="min-h-screen bg-base">
       <HeroSection
         onLogin={() => openModal('login')}
         onRegister={() => openModal('register')}

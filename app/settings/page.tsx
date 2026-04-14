@@ -28,17 +28,16 @@ export default function SettingsPage() {
 
   if (!mounted || status === 'loading' || !user) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="bg-white h-28 animate-pulse" />
+      <div className="min-h-screen bg-base">
+        <div className="bg-surface h-28 animate-pulse" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-28">
-      {/* Header */}
-      <div className="bg-white px-6 pt-14 pb-6 shadow-sm">
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+    <div className="min-h-screen bg-base pb-28">
+      <div className="bg-surface px-6 pt-14 pb-6 shadow-sm">
+        <h1 className="text-2xl font-bold text-primary">Settings</h1>
       </div>
 
       <div className="px-5 pt-6 flex flex-col gap-4">

@@ -5,8 +5,9 @@ import { resolveVerificationTokenForUser } from '@/lib/emailVerification';
 
 export const runtime = 'nodejs';
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
+    const origin = new URL(request.url).origin;
     const session = await auth();
     const sessionUserId = session?.user?.id;
     if (!sessionUserId) {
@@ -28,7 +29,7 @@ export async function POST() {
       );
     }
 
-    await sendVerificationEmail(result.user.email, result.token, result.user.name);
+    await sendVerificationEmail(result.user.email, result.token, result.user.name, origin);
 
     return NextResponse.json({
       message: result.reused

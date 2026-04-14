@@ -43,12 +43,12 @@ export default function LoginForm({ onSuccess, onSwitchToRegister }: LoginFormPr
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">Welcome back</h2>
-        <p className="text-sm text-gray-500 mb-5">Sign in to your account</p>
+        <h2 className="text-xl font-bold text-primary mb-1">Welcome back</h2>
+        <p className="text-sm text-secondary mb-5">Sign in to your account</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        <label className="block text-sm font-medium text-secondary mb-1.5">
           Email
         </label>
         <input
@@ -58,12 +58,12 @@ export default function LoginForm({ onSuccess, onSwitchToRegister }: LoginFormPr
           placeholder="you@example.com"
           required
           autoComplete="email"
-          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-500 text-gray-900 text-sm"
+          className="w-full px-4 py-3 rounded-xl border border-default focus:outline-none focus:ring-2 focus:ring-primary text-primary text-sm"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        <label className="block text-sm font-medium text-secondary mb-1.5">
           Password
         </label>
         <input
@@ -73,12 +73,12 @@ export default function LoginForm({ onSuccess, onSwitchToRegister }: LoginFormPr
           placeholder="••••••••"
           required
           autoComplete="current-password"
-          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-500 text-gray-900 text-sm"
+          className="w-full px-4 py-3 rounded-xl border border-default focus:outline-none focus:ring-2 focus:ring-primary text-primary text-sm"
         />
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl px-4 py-3">
+        <div className="bg-danger/12 border border-danger/30 text-danger text-sm rounded-xl px-4 py-3">
           {error}
         </div>
       )}
@@ -87,18 +87,18 @@ export default function LoginForm({ onSuccess, onSwitchToRegister }: LoginFormPr
         {loading ? 'Signing in…' : 'Sign In'}
       </Button>
 
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-secondary">
         No account?{' '}
         <button
           type="button"
           onClick={onSwitchToRegister}
-          className="text-sky-500 font-semibold hover:underline"
+          className="text-primary font-semibold hover:underline"
         >
           Register
         </button>
       </p>
 
-      <p className="text-xs text-gray-400 text-center bg-gray-50 rounded-lg py-2">
+      <p className="text-xs text-secondary text-center bg-base rounded-lg py-2">
         Sign in using the account you registered and verified by email.
       </p>
     </form>

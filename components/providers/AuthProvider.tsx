@@ -21,6 +21,7 @@ function SessionBridge({ children }: { children: React.ReactNode }) {
         id: sessionUser.id,
         email: sessionUser.email,
         name: sessionUser.name ?? '',
+        role: sessionUser.role === 'ADMIN' ? 'ADMIN' : 'USER',
         address: sessionUser.address ?? '',
         phone: sessionUser.phone ?? null,
         isVerified: sessionUser.isVerified,

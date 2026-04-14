@@ -16,14 +16,16 @@ export async function GET(request: Request) {
     const result = await verifyEmailToken(token);
     if (!result.success) {
       if (result.reason === 'invalid') {
-        return NextResponse.json({ message: 'Invalid link' }, { status: 400 });
+        return NextResponse.json({ message: 'Invalid verification link.' }, { status: 400 });
       }
 
       if (result.reason === 'expired') {
-        return NextResponse.json({ message: 'Link expired' }, { status: 400 });
+        return NextResponse.json({ message: 'Verification link expired.' }, { status: 400 });
       }
 
-      return NextResponse.json({ message: 'Already verified' }, { status: 409 });
+      return NextResponse.json({
+        message: 'Account already verified. You can continue to your dashboard.',
+      });
     }
 
     return NextResponse.json({
