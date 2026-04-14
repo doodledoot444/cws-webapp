@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { getRequiredOneOfEnv } from '@/lib/env';
+
+const authSecret = getRequiredOneOfEnv(['NEXTAUTH_SECRET', 'AUTH_SECRET'], 'middleware token validation');
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({
     req,
-    secret: process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET,
+    secret: authSecret,
   });
 
   if (!token) {

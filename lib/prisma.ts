@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
+import { getRequiredEnv } from '@/lib/env';
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
@@ -12,10 +13,7 @@ export function getPrisma() {
     return globalForPrisma.prisma;
   }
 
-  const connectionString = process.env.DATABASE_URL;
-  if (!connectionString) {
-    throw new Error('Missing DATABASE_URL. Set it in your environment before using Prisma.');
-  }
+  const connectionString = getRequiredEnv('DATABASE_URL', 'Prisma');
 
   const pool =
     globalForPrisma.prismaPool ??

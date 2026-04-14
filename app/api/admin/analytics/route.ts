@@ -3,6 +3,8 @@ import { auth } from '@/auth';
 import { getRevenueAnalytics } from '@/lib/analytics';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET() {
   try {

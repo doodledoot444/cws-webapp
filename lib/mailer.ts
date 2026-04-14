@@ -1,15 +1,9 @@
 import { Resend } from 'resend';
+import { getRequiredEnv } from '@/lib/env';
 
 function getResendConfig() {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM;
-
-  if (!apiKey) {
-    throw new Error('Missing email configuration. Set RESEND_API_KEY.');
-  }
-  if (!from) {
-    throw new Error('Missing email configuration. Set EMAIL_FROM.');
-  }
+  const apiKey = getRequiredEnv('RESEND_API_KEY', 'email delivery');
+  const from = getRequiredEnv('EMAIL_FROM', 'email delivery');
 
   return { apiKey, from, replyTo: process.env.EMAIL_REPLY_TO };
 }

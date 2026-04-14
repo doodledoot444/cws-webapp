@@ -3,12 +3,14 @@ import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { getPrisma } from '@/lib/prisma';
 import { isValidEmail, verifyPassword } from '@/lib/auth';
+import { getRequiredOneOfEnv } from '@/lib/env';
 
 const prisma = getPrisma();
+const authSecret = getRequiredOneOfEnv(['NEXTAUTH_SECRET', 'AUTH_SECRET'], 'Auth.js');
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  secret: process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET,
+  secret: authSecret,
   session: {
     strategy: 'jwt',
   },
