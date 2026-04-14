@@ -15,10 +15,13 @@ export function getPrisma() {
 
   const connectionString = getRequiredEnv('DATABASE_URL', 'Prisma');
 
+  const isProduction = process.env.NODE_ENV === 'production';
+
   const pool =
     globalForPrisma.prismaPool ??
     new Pool({
       connectionString,
+      ...(isProduction ? { ssl: { rejectUnauthorized: false } } : {}),
     });
 
   const prisma = new PrismaClient({
