@@ -23,21 +23,26 @@ export default function LoginForm({ onSuccess, onSwitchToRegister }: LoginFormPr
     setError('');
     setLoading(true);
 
-    const result = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
-    });
-    setLoading(false);
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
 
-    if (!result?.error) {
-      onSuccess();
-      router.push('/dashboard');
-      router.refresh();
-      return;
+      if (result?.ok && !result.error) {
+        onSuccess();
+        router.push('/dashboard');
+        router.refresh();
+        return;
+      }
+
+      setError(result?.error || 'Invalid email or password. Please try again.');
+    } catch {
+      setError('Unable to sign in right now. Please try again.');
+    } finally {
+      setLoading(false);
     }
-
-    setError(result?.error || 'Invalid email or password. Please try again.');
   };
 
   return (
