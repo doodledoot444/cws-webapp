@@ -8,13 +8,12 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const authSecret = getRequiredOneOfEnv(
-  ['NEXTAUTH_SECRET', 'AUTH_SECRET'],
-  'admin analytics authentication'
-);
-
 export async function GET(request: NextRequest) {
   try {
+    const authSecret = getRequiredOneOfEnv(
+      ['NEXTAUTH_SECRET', 'AUTH_SECRET'],
+      'admin analytics authentication'
+    );
     const token = await getToken({ req: request, secret: authSecret });
     const userId = token?.id;
     const role = token?.role;
