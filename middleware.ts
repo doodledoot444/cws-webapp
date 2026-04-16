@@ -1,20 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { getRequiredOneOfEnv } from '@/lib/env';
 
 export async function middleware(req: NextRequest) {
-  const authSecret = getRequiredOneOfEnv(
-    ['NEXTAUTH_SECRET', 'AUTH_SECRET'],
-    'middleware token validation'
-  );
+  const authSecret = process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET;
+  const token = await getToken({ req, secret: authSecret });
 
-  const token = await getToken({
-    req,
-    secret: authSecret,
-  });
-
-  if (!token) {
+  if (!token?.id) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
@@ -26,5 +18,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/order/:path*', '/profile/:path*', '/admin/:path*'],
+  matcher: ['/admin/:path*'],
 };
