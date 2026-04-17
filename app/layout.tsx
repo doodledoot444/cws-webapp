@@ -17,6 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Ceris Water Station",
   description: "Order purified water delivered right to your door",
+  icons: {
+    icon: '/genchatpt.png',
+    shortcut: '/genchatpt.png',
+    apple: '/genchatpt.png',
+  },
 };
 
 export default function RootLayout({
