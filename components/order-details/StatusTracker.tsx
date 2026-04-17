@@ -33,7 +33,6 @@ export default function StatusTracker({ currentStatus }: StatusTrackerProps) {
         {STATUS_FLOW.map((status, index) => {
           const isCompleted = index < currentIndex;
           const isCurrent = index === currentIndex;
-          const isUpcoming = index > currentIndex;
           const isLast = index === STATUS_FLOW.length - 1;
 
           return (

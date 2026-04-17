@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useAppStore } from '@/store/useAppStore';
@@ -9,22 +9,17 @@ import OrderForm from '@/components/order/OrderForm';
 import { ArrowLeft } from 'lucide-react';
 
 export default function OrderPage() {
-  const [mounted, setMounted] = useState(false);
   const user = useAppStore((state) => state.user);
   const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted && status === 'unauthenticated') {
+    if (status === 'unauthenticated') {
       router.replace('/');
     }
-  }, [mounted, status, router]);
+  }, [status, router]);
 
-  if (!mounted || status === 'loading' || !user) {
+  if (status === 'loading' || !user) {
     return (
       <div className="min-h-screen bg-base">
         <div className="bg-surface h-20 animate-pulse" />

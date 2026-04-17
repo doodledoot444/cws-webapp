@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useAppStore } from '@/store/useAppStore';
@@ -10,7 +10,6 @@ import OrderSummary from '@/components/order-details/OrderSummary';
 import { ArrowLeft } from 'lucide-react';
 
 export default function OrderDetailsPage() {
-  const [mounted, setMounted] = useState(false);
   const params = useParams();
   const router = useRouter();
   const orderId = params.id as string;
@@ -20,17 +19,13 @@ export default function OrderDetailsPage() {
   const order = orders.find((o) => o.id === orderId);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted && status === 'unauthenticated') {
+    if (status === 'unauthenticated') {
       router.replace('/');
     }
-  }, [mounted, status, router]);
+  }, [status, router]);
 
   useEffect(() => {
-    if (!mounted || status !== 'authenticated') {
+    if (status !== 'authenticated') {
       return;
     }
 
@@ -40,9 +35,9 @@ export default function OrderDetailsPage() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [mounted, status, fetchOrders]);
+  }, [status, fetchOrders]);
 
-  if (!mounted || status === 'loading') {
+  if (status === 'loading') {
     return (
       <div className="min-h-screen bg-base">
         <div className="bg-surface h-20 animate-pulse" />
