@@ -12,14 +12,20 @@ export default function OrderPage() {
   const user = useAppStore((state) => state.user);
   const { status } = useSession();
   const router = useRouter();
+  const isAdminUser = user?.role === 'ADMIN';
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.replace('/');
+      return;
     }
-  }, [status, router]);
 
-  if (status === 'loading' || !user) {
+    if (status === 'authenticated' && isAdminUser) {
+      router.replace('/admin');
+    }
+  }, [status, isAdminUser, router]);
+
+  if (status === 'loading' || !user || isAdminUser) {
     return (
       <div className="min-h-screen bg-base">
         <div className="bg-surface h-20 animate-pulse" />

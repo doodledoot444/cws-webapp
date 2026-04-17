@@ -15,17 +15,23 @@ export default function OrderDetailsPage() {
   const orderId = params.id as string;
   const { status } = useSession();
 
-  const { orders, fetchOrders } = useAppStore();
+  const { user, orders, fetchOrders } = useAppStore();
+  const isAdminUser = user?.role === 'ADMIN';
   const order = orders.find((o) => o.id === orderId);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.replace('/');
+      return;
     }
-  }, [status, router]);
+
+    if (status === 'authenticated' && isAdminUser) {
+      router.replace('/admin');
+    }
+  }, [status, isAdminUser, router]);
 
   useEffect(() => {
-    if (status !== 'authenticated') {
+    if (status !== 'authenticated' || isAdminUser) {
       return;
     }
 
@@ -35,9 +41,9 @@ export default function OrderDetailsPage() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [status, fetchOrders]);
+  }, [status, isAdminUser, fetchOrders]);
 
-  if (status === 'loading') {
+  if (status === 'loading' || isAdminUser) {
     return (
       <div className="min-h-screen bg-base">
         <div className="bg-surface h-20 animate-pulse" />

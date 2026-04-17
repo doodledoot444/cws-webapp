@@ -32,15 +32,21 @@ function DashboardPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const verifiedFromQuery = searchParams.get('verified') === '1';
+  const isAdminUser = user?.role === 'ADMIN';
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.replace('/');
+      return;
     }
-  }, [status, router]);
+
+    if (status === 'authenticated' && isAdminUser) {
+      router.replace('/admin');
+    }
+  }, [status, isAdminUser, router]);
 
   useEffect(() => {
-    if (status !== 'authenticated') {
+    if (status !== 'authenticated' || isAdminUser) {
       return;
     }
 
@@ -53,9 +59,9 @@ function DashboardPageContent() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [status, fetchOrders, fetchNotifications]);
+  }, [status, isAdminUser, fetchOrders, fetchNotifications]);
 
-  if (status === 'loading' || !user) {
+  if (status === 'loading' || !user || isAdminUser) {
     return <DashboardPageSkeleton />;
   }
 

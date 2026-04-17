@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       'admin analytics authentication'
     );
     const token = await getToken({ req: request, secret: authSecret });
-    const userId = token?.id;
+    const userId = token?.id ?? token?.sub;
     const role = token?.role;
 
     if (!userId) {
